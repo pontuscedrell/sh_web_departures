@@ -205,58 +205,6 @@
     let countdown = 30;
     let countdownInterval;
 
-    function renderStopSelector() {
-      // Button selector (desktop)
-      const btnContainer = document.getElementById("stop-selector-buttons");
-      btnContainer.innerHTML = "";
-      Object.entries(knownStops).forEach(([stopName, stopId]) => {
-        const btn = document.createElement("button");
-        btn.textContent = stopName;
-        btn.onclick = () => {
-          currentSiteId = stopId;
-          currentStop = stopName;
-          fetchDepartures();
-          updateActiveStopButton();
-          document.querySelectorAll(".table-wrapper").forEach((w) => (w.scrollTop = 0));
-          // Sync dropdown on selection
-          const sel = document.getElementById("stop-select");
-          if (sel) sel.value = stopId;
-        };
-        btn.dataset.id = stopId;
-        btnContainer.appendChild(btn);
-      });
-
-      // Dropdown selector (mobile)
-      const select = document.getElementById("stop-select");
-      select.innerHTML = "";
-      Object.entries(knownStops).forEach(([stopName, stopId]) => {
-        const opt = document.createElement("option");
-        opt.value = stopId;
-        opt.textContent = stopName;
-        if (stopId === currentSiteId) opt.selected = true;
-        select.appendChild(opt);
-      });
-      select.onchange = function() {
-        const stopId = parseInt(this.value, 10);
-        const stopName = Object.keys(knownStops).find(key => knownStops[key] === stopId);
-        currentSiteId = stopId;
-        currentStop = stopName;
-        fetchDepartures();
-        updateActiveStopButton();
-        document.querySelectorAll(".table-wrapper").forEach((w) => (w.scrollTop = 0));
-      };
-
-      updateActiveStopButton();
-    }
-
-    function updateActiveStopButton() {
-      document.querySelectorAll("#stop-selector-buttons button").forEach((btn) => {
-        btn.classList.toggle("active", parseInt(btn.dataset.id) === currentSiteId);
-      });
-      // Sync dropdown value
-      const select = document.getElementById("stop-select");
-      if (select) select.value = currentSiteId;
-    }
 
     function getLineColors(designation) {
       let backgroundColor = "#555";
