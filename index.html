@@ -245,7 +245,7 @@ td:nth-child(2) { text-align: left; }
 
         let delayText = "";
         if (!cancelled && (diffMin > 3 || diffMin < -2)) {
-          delayText = `<span style="font-size:0.75rem; color: yellow; margin-right:4px;">${diffMin > 0 ? "+" : ""}${diffMin}</span>`;
+          delayText = `<span style="font-size:0.85rem; color: yellow; margin-right:4px; font-weight: bold;">${diffMin > 0 ? "+" : ""}${diffMin}</span>`;
         }
 
         const timeStyle = cancelled ? "color: red; text-decoration: line-through;" : "";
