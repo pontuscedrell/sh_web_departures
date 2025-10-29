@@ -103,8 +103,18 @@ td:nth-child(2) { text-align: left; }
 .line-wrapper { position: relative; display: inline-block; }
 .warning-icon { position: absolute; top: -0.4rem; right: -0.4rem; font-size: 0.8rem; color: yellow; pointer-events: none; }
 
-.scroll-container { position: relative; display: block; overflow: hidden; max-width: 100%; min-height: 2em; white-space: nowrap; margin-left: 0; }
-.scroll-text { display: inline-block; white-space: nowrap; animation: scroll-left 11s linear infinite; padding-left: 100%; box-sizing: content-box; }
+.scroll-container { 
+  position: relative; 
+  display: block; 
+  max-width: 100%; 
+  white-space: normal; /* allow wrapping */
+  overflow: visible; 
+}
+.scroll-text { 
+  display: inline; 
+  animation: none; /* stop scrolling */
+  white-space: normal; 
+}
 .destination-cell { max-width: 20vw; width: 60%; overflow: hidden; white-space: nowrap; position: relative; padding: 0 8px; z-index: 0; }
 
 @keyframes scroll-left {
