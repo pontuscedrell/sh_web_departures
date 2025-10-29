@@ -217,8 +217,8 @@ td:nth-child(2) { text-align: left; }
         // Train only
         const trainDeps = allDeps.filter(dep => dep.line.transport_mode === "TRAIN");
 
-        const northDeps = trainDeps.filter(dep => dep.direction_code === 2).slice(0, 10);
-        const southDeps = trainDeps.filter(dep => dep.direction_code === 1).slice(0, 10);
+        const northDeps = trainDeps.filter(dep => dep.direction_code === 2).slice(0, 5);
+        const southDeps = trainDeps.filter(dep => dep.direction_code === 1).slice(0, 5);
 
         updateTable("north-table", northDeps);
         updateTable("south-table", southDeps);
