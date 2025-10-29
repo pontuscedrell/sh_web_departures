@@ -200,11 +200,10 @@
     <select id="stop-select"></select>
   </div>
   <script>
-    let currentSiteId = 1353;
-    let currentStop = "Grindsgatan";
+    let currentSiteId = 5171;
+    let currentStop = "Flemingsberg";
     let countdown = 30;
     let countdownInterval;
-    const knownStops = { Grindsgatan: 1353, Skanstull: 9190, "Södra Station": 9530, Rosenlund: 1351 };
 
     function renderStopSelector() {
       // Button selector (desktop)
@@ -272,7 +271,7 @@
     function filterDepartures(departures) {
       if (currentStop === "Skanstull") return departures.filter(dep => dep.line.transport_mode === "METRO");
       if (currentStop === "Grindsgatan") return departures.filter(dep => dep.line.transport_mode === "BUS");
-      if (currentStop === "Södra Station") return departures.filter(dep => dep.line.transport_mode === "TRAIN");
+      if (currentStop === "Flemingsberg") return departures.filter(dep => dep.line.transport_mode === "TRAIN");
       if (currentStop === "Rosenlund") return departures.filter(dep => dep.line.transport_mode === "BUS");
       return departures;
     }
