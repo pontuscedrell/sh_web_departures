@@ -217,10 +217,7 @@
     }
 
     function filterDepartures(departures) {
-      if (currentStop === "Skanstull") return departures.filter(dep => dep.line.transport_mode === "METRO");
-      if (currentStop === "Grindsgatan") return departures.filter(dep => dep.line.transport_mode === "BUS");
       if (currentStop === "Flemingsberg") return departures.filter(dep => dep.line.transport_mode === "TRAIN");
-      if (currentStop === "Rosenlund") return departures.filter(dep => dep.line.transport_mode === "BUS");
       return departures;
     }
 
@@ -230,22 +227,13 @@
         const data = await res.json();
         const filtered = filterDepartures(data.departures);
         let northDeps, southDeps;
-        if (currentStop === "Södra Station") {
+        if (currentStop === "Flemingsberg") {
           northDeps = filtered.filter(dep => dep.direction_code === 2).slice(0, 10);
           southDeps = filtered.filter(dep => dep.direction_code === 1).slice(0, 10);
           document.getElementById('northBound').textContent = 'Norrgående';
           document.getElementById('southBound').textContent = 'Södergående';
-        } else if (currentStop === "Rosenlund") {
-          northDeps = filtered.filter(dep => dep.stop_point?.id === 10139).slice(0, 10);
-          southDeps = filtered.filter(dep => dep.stop_point?.id === 10136).slice(0, 10);
-          document.getElementById('northBound').textContent = 'Västerut';
-          document.getElementById('southBound').textContent = 'Österut';
-        } else {
-          northDeps = filtered.filter(dep => dep.direction_code === 1).slice(0, 10);
-          southDeps = filtered.filter(dep => dep.direction_code === 2).slice(0, 10);
-          document.getElementById('northBound').textContent = 'Norrgående';
-          document.getElementById('southBound').textContent = 'Södergående';
         }
+        
         updateTable("north-table", northDeps);
         updateTable("south-table", southDeps);
         document.getElementById("stop-name").textContent = data.stop_name || currentStop;
