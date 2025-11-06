@@ -1,23 +1,14 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SL Avgångar – Flemingsberg</title>
-  <style>
-:root {
-  --main-bg: #111;
-  --header-bg: #222;
-  --font-color: #fff;
-  --font-color-muted: #aaa;
-}
-
-* { box-sizing: border-box; }
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SL Avgångar – Flemingsberg</title>
+<style>
 body {
   font-family: sans-serif;
-  background: var(--main-bg);
-  color: var(--font-color);
+  background: #111;
+  color: #fff;
   margin: 0;
   padding: 0;
   font-size: 1.2rem;
@@ -25,146 +16,60 @@ body {
   flex-direction: column;
   height: 100vh;
 }
-
 #header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: var(--header-bg);
+  background: #222;
   font-size: 1.6rem;
 }
-
-#stop-name { font-size: 2.5rem; min-width: 80%; }
-
-#last-updated {
-  cursor: pointer;
-  color: var(--font-color-muted);
-}
-
+#stop-name { font-size: 2.2rem; }
+#last-updated { cursor: pointer; color: #aaa; }
 .tables-container {
   display: flex;
   flex: 1;
   overflow: hidden;
-  gap: 2rem;
+  gap: 1rem;
   padding: 1rem;
 }
-
-.direction-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-h2 {
-  text-align: center;
-  font-size: 2rem;
-  margin: 1rem 0;
-}
-
+.direction-container { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+h2 { text-align: center; margin: 0.5rem 0; font-size: 1.6rem; }
 .table-wrapper { flex: 1; overflow-y: auto; }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
+table { width: 100%; border-collapse: collapse; }
 th, td {
-  padding: 1rem 0.5rem;
+  padding: 0.8rem 0.4rem;
   border-bottom: 2px solid #555;
-  font-size: 1.6rem;
   text-align: center;
 }
-
-.time { text-align: right; }
-
-th {
-  text-transform: uppercase;
-  color: #bbb;
-  position: sticky;
-  top: 0;
-  background: var(--main-bg);
-  z-index: 1;
-}
-
-td:nth-child(2) { text-align: left; }
-
 .line {
   font-weight: bold;
   color: #fff;
-  padding: 0.4rem;
-  border-radius: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 0.4rem;
   display: inline-block;
-  width: 4ch;
-  min-width: 4ch;
+  min-width: 3ch;
 }
-
-.line-wrapper { position: relative; display: inline-block; }
-.warning-icon { position: absolute; top: -0.4rem; right: -0.4rem; font-size: 0.8rem; color: yellow; pointer-events: none; }
-
-.scroll-container { 
-  position: relative; 
-  display: block; 
-  max-width: 100%; 
-  white-space: normal; /* allow wrapping */
-  overflow: visible; 
-}
-.scroll-text { 
-  display: inline; 
-  animation: none; /* stop scrolling */
-  white-space: normal; 
-}
-.destination-cell { max-width: 20vw; width: 60%; overflow: hidden; white-space: nowrap; position: relative; padding: 0 8px; z-index: 0; }
-
-@keyframes scroll-left {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
-}
-
-/* ---------- Mobile Portrait ---------- */
+.warning-icon { color: yellow; font-size: 0.8rem; margin-left: 0.2rem; }
+.time { text-align: right; }
+.destination-cell { width: 60%; text-align: left; }
 @media (max-width: 767px) and (orientation: portrait) {
   .tables-container { flex-direction: column; }
-
-  #header {
-    font-size: 0.8rem;
-    padding: 0.5rem;
-  }
-
-  #battery-status { font-size: 0.8rem; }
-
-  .direction-container > h2 { margin: 0; }
 }
-
-/* ---------- Mobile Landscape ---------- */
-@media (max-width: 1000px) and (orientation: landscape) {
-  .tables-container {
-    flex-direction: row !important;
-    gap: 1rem;
-    padding: 0.5rem;
-  }
-
-  th, td {
-    font-size: 1rem;
-    padding: 0.3rem 0.3rem;
-  }
-
-  #stop-name { display: none; }
-}
-  </style>
+</style>
 </head>
 <body>
   <div id="header">
     <div id="stop-name">Flemingsberg</div>
     <div id="last-updated" onclick="manualRefresh()">
       Senast uppdaterad: <span id="updated-time">-</span> (<span id="countdown">30</span>s)
-      <span id="battery-status" style="margin-left: 1rem; color: #aaa;">--%</span>
+      <span id="battery-status" style="margin-left:1rem;color:#aaa;">N/A</span>
     </div>
   </div>
 
   <div class="tables-container">
     <div class="direction-container">
-      <h2 id="northBound">Norrgående</h2>
+      <h2>Norrgående</h2>
       <div class="table-wrapper">
         <table id="north-table">
           <thead><tr><th>Linje</th><th>Destination</th><th class="time">Tid</th></tr></thead>
@@ -173,7 +78,7 @@ td:nth-child(2) { text-align: left; }
       </div>
     </div>
     <div class="direction-container">
-      <h2 id="southBound">Södergående</h2>
+      <h2>Södergående</h2>
       <div class="table-wrapper">
         <table id="south-table">
           <thead><tr><th>Linje</th><th>Destination</th><th class="time">Tid</th></tr></thead>
@@ -183,128 +88,120 @@ td:nth-child(2) { text-align: left; }
     </div>
   </div>
 
-  <script>
-    // --- CONFIG ---
-    const currentSiteId = 9526; // Flemingsberg
-    const currentStop = "Flemingsberg";
-    let countdown = 30;
-    let countdownInterval;
+<script>
+// --- CONFIG ---
+var currentSiteId = 9526; // Flemingsberg
+var countdown = 30;
+var countdownInterval;
 
-    // --- Line colors ---
-    function getLineColors(designation) {
-      let backgroundColor = "#555";
-      let textColor = "white";
-      if (["40", "41", "42", "43", "44"].includes(designation)) backgroundColor = "#d05d9a"; // commuter trains
-      else if (["17", "18", "19"].includes(designation)) backgroundColor = "#169d4c"; // green line
-      else if (["1", "2", "3", "4"].includes(designation)) backgroundColor = "#008aca"; // blue buses
-      else if (["57", "74", "154", "164"].includes(designation)) backgroundColor = "#d61d23"; // red buses
-      return { backgroundColor, textColor };
-    }
+// --- Line colors ---
+function getLineColors(designation) {
+  var backgroundColor = "#555";
+  var textColor = "white";
+  if (["40","41","42","43","44"].indexOf(designation) !== -1) backgroundColor = "#d05d9a";
+  else if (["17","18","19"].indexOf(designation) !== -1) backgroundColor = "#169d4c";
+  else if (["1","2","3","4"].indexOf(designation) !== -1) backgroundColor = "#008aca";
+  else if (["57","74","154","164"].indexOf(designation) !== -1) backgroundColor = "#d61d23";
+  return { backgroundColor: backgroundColor, textColor: textColor };
+}
 
-    // --- Fetch departures (TRAIN only) ---
-    async function fetchDepartures() {
-      try {
-        const res = await fetch(`https://transport.integration.sl.se/v1/sites/${currentSiteId}/departures`);
-        const data = await res.json();
-        const allDeps = data.departures || [];
+// --- Fetch departures (XHR) ---
+function fetchDepartures() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://transport.integration.sl.se/v1/sites/" + currentSiteId + "/departures", true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          var allDeps = data.departures || [];
+          var trainDeps = [];
+          for (var i=0;i<allDeps.length;i++) {
+            if (allDeps[i].line && allDeps[i].line.transport_mode === "TRAIN") trainDeps.push(allDeps[i]);
+          }
+          var northDeps = [];
+          var southDeps = [];
+          for (var j=0;j<trainDeps.length;j++) {
+            if (trainDeps[j].direction_code === 2 && northDeps.length < 5) northDeps.push(trainDeps[j]);
+            else if (trainDeps[j].direction_code === 1 && southDeps.length < 5) southDeps.push(trainDeps[j]);
+          }
+          updateTable("north-table", northDeps);
+          updateTable("south-table", southDeps);
 
-        // Train only
-        const trainDeps = allDeps.filter(dep => dep.line.transport_mode === "TRAIN");
-
-        const northDeps = trainDeps.filter(dep => dep.direction_code === 2).slice(0, 5);
-        const southDeps = trainDeps.filter(dep => dep.direction_code === 1).slice(0, 5);
-
-        updateTable("north-table", northDeps);
-        updateTable("south-table", southDeps);
-
-        document.getElementById("stop-name").textContent = "Flemingsberg";
-        const now = new Date();
-        document.getElementById("updated-time").textContent =
-          now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-        countdown = 30;
-      } catch (err) {
-        console.error("Fel vid hämtning av avgångar:", err);
-      }
-    }
-
-    // --- Update table ---
-    function updateTable(tableId, departures) {
-      const tbody = document.getElementById(tableId).querySelector("tbody");
-      tbody.innerHTML = "";
-      if (!departures.length) {
-        tbody.innerHTML = '<tr><td colspan="3">Inga avgångar</td></tr>';
-        return;
-      }
-
-      departures.forEach(dep => {
-        const { backgroundColor, textColor } = getLineColors(dep.line.designation);
-        const cancelled = dep.state === "CANCELLED";
-        const scheduledTime = new Date(dep.scheduled);
-        const expectedTime = new Date(dep.expected);
-        const diffMin = Math.round((expectedTime - scheduledTime) / 60000);
-
-        let delayText = "";
-        if (!cancelled && (diffMin > 3 || diffMin < -2)) {
-          delayText = `<span style="font-size:0.85rem; color: yellow; margin-right:4px; font-weight: bold;">${diffMin > 0 ? "+" : ""}${diffMin}</span>`;
+          var now = new Date();
+          document.getElementById("updated-time").textContent =
+            now.getHours().toString().padStart ? 
+              now.toLocaleTimeString("sv-SE", {hour:"2-digit",minute:"2-digit",second:"2-digit"}) :
+              now.getHours() + ":" + now.getMinutes();
+          countdown = 30;
+        } catch(e) {
+          console.log("Fel vid parsning:", e);
         }
-
-        const timeStyle = cancelled ? "color: red; text-decoration: line-through;" : "";
-        const cancelledText = cancelled ? `<div style="color: red; font-size: 0.8rem; font-weight: bold;">Inställd</div>` : "";
-
-        const row = document.createElement("tr");
-        row.classList.add("clickable-row");
-        row.innerHTML = `
-          <td>
-            <span class="line-wrapper">
-              <span class="line" style="background:${backgroundColor};color:${textColor};">${dep.line.designation.padStart(3, ' ')}</span>
-              ${(dep.deviations && dep.deviations.length) ? `<span class="warning-icon">🟡</span>` : ""}
-            </span>
-          </td>
-          <td class="destination-cell">${dep.destination}</td>
-          <td class="time">${cancelledText}${delayText}<span style="${timeStyle}">${dep.display}</span></td>
-        `;
-
-        tbody.appendChild(row);
-      });
-    }
-
-    // --- Countdown + Manual refresh ---
-    function manualRefresh() {
-      fetchDepartures();
-      countdown = 30;
-    }
-
-    function startCountdown() {
-      countdownInterval = setInterval(() => {
-        countdown--;
-        if (countdown <= 0) fetchDepartures();
-        document.getElementById("countdown").textContent = countdown;
-      }, 1000);
-    }
-
-    // --- Battery Status ---
-    function updateBatteryStatus() {
-      if (!navigator.getBattery) {
-        document.getElementById("battery-status").textContent = "N/A";
-        return;
+      } else {
+        console.log("Fel vid hämtning: " + xhr.status);
       }
-      navigator.getBattery().then(battery => {
-        function updateAll() {
-          const level = Math.round(battery.level * 100);
-          document.getElementById("battery-status").textContent = level + "%";
-        }
-        updateAll();
-        battery.addEventListener("levelchange", updateAll);
-        battery.addEventListener("chargingchange", updateAll);
-      });
     }
+  };
+  xhr.send();
+}
 
-    // --- Init ---
-    document.addEventListener("DOMContentLoaded", () => {
-      fetchDepartures();
-      startCountdown();
-      updateBatteryStatus();
-    });
-  </script>
+// --- Update table ---
+function updateTable(tableId, departures) {
+  var tbody = document.getElementById(tableId).getElementsByTagName("tbody")[0];
+  tbody.innerHTML = "";
+  if (!departures.length) {
+    tbody.innerHTML = "<tr><td colspan='3'>Inga avgångar</td></tr>";
+    return;
+  }
+
+  for (var i=0;i<departures.length;i++) {
+    var dep = departures[i];
+    var colors = getLineColors(dep.line.designation);
+    var cancelled = dep.state === "CANCELLED";
+    var scheduledTime = new Date(dep.scheduled);
+    var expectedTime = new Date(dep.expected);
+    var diffMin = Math.round((expectedTime - scheduledTime)/60000);
+    var delayText = "";
+    if (!cancelled && (diffMin > 3 || diffMin < -2)) {
+      delayText = "<span style='font-size:0.85rem;color:yellow;margin-right:4px;font-weight:bold;'>" + 
+                  (diffMin>0?"+":"") + diffMin + "</span>";
+    }
+    var timeStyle = cancelled ? "color:red;text-decoration:line-through;" : "";
+    var cancelledText = cancelled ? "<div style='color:red;font-size:0.8rem;font-weight:bold;'>Inställd</div>" : "";
+    var warn = (dep.deviations && dep.deviations.length) ? "<span class='warning-icon'>🟡</span>" : "";
+    var lineText = dep.line.designation;
+    while (lineText.length < 3) lineText = " " + lineText;
+
+    var row = document.createElement("tr");
+    row.innerHTML =
+      "<td><span class='line' style='background:" + colors.backgroundColor + ";color:" + colors.textColor + ";'>" +
+      lineText + "</span>" + warn + "</td>" +
+      "<td class='destination-cell'>" + dep.destination + "</td>" +
+      "<td class='time'>" + cancelledText + delayText +
+      "<span style='" + timeStyle + "'>" + dep.display + "</span></td>";
+    tbody.appendChild(row);
+  }
+}
+
+// --- Countdown + Manual refresh ---
+function manualRefresh() {
+  fetchDepartures();
+  countdown = 30;
+}
+
+function startCountdown() {
+  countdownInterval = setInterval(function() {
+    countdown--;
+    if (countdown <= 0) fetchDepartures();
+    document.getElementById("countdown").textContent = countdown;
+  }, 1000);
+}
+
+// --- Init ---
+document.addEventListener("DOMContentLoaded", function() {
+  fetchDepartures();
+  startCountdown();
+});
+</script>
 </body>
 </html>
