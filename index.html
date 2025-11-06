@@ -129,14 +129,9 @@ function fetchDepartures() {
           updateTable("south-table", southDeps);
 
           var now = new Date();
-          document.getElementById("updated-time").textContent =
-            now.getHours().toString().padStart ? 
-              now.toLocaleTimeString("sv-SE", {hour:"2-digit",minute:"2-digit",second:"2-digit"}) :
-              now.getHours() + ":" + now.getMinutes();
+          document.getElementById("updated-time").textContent = now.toLocaleTimeString();
           countdown = 30;
-        } catch(e) {
-          console.log("Fel vid parsning:", e);
-        }
+        } catch(e) { console.log("Fel vid parsning:", e); }
       } else {
         console.log("Fel vid hämtning: " + xhr.status);
       }
@@ -166,9 +161,19 @@ function updateTable(tableId, departures) {
       delayText = "<span style='font-size:0.85rem;color:yellow;margin-right:4px;font-weight:bold;'>" + 
                   (diffMin>0?"+":"") + diffMin + "</span>";
     }
+
+    var deviationBanner = "";
+    if (dep.deviations && dep.deviations.length) {
+      var devText = dep.deviations[0].text || "Avvikelse i trafiken";
+      deviationBanner = "<div style='background:yellow;color:black;font-size:0.9rem;padding:2px 4px;margin-top:2px;border-radius:3px;'>" +
+                        "⚠️ " + devText + "</div>";
+    }
+
     var timeStyle = cancelled ? "color:red;text-decoration:line-through;" : "";
     var cancelledText = cancelled ? "<div style='color:red;font-size:0.8rem;font-weight:bold;'>Inställd</div>" : "";
+
     var warn = (dep.deviations && dep.deviations.length) ? "<span class='warning-icon'>🟡</span>" : "";
+
     var lineText = dep.line.designation;
     while (lineText.length < 3) lineText = " " + lineText;
 
@@ -176,7 +181,7 @@ function updateTable(tableId, departures) {
     row.innerHTML =
       "<td><span class='line' style='background:" + colors.backgroundColor + ";color:" + colors.textColor + ";'>" +
       lineText + "</span>" + warn + "</td>" +
-      "<td class='destination-cell'>" + dep.destination + "</td>" +
+      "<td class='destination-cell'>" + dep.destination + deviationBanner + "</td>" +
       "<td class='time'>" + cancelledText + delayText +
       "<span style='" + timeStyle + "'>" + dep.display + "</span></td>";
     tbody.appendChild(row);
